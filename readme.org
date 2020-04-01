@@ -26,23 +26,29 @@ python main.py --dataset mnist --classifier simple
 
 * Hand-written tasks
 
+** LipitK Task
 #+BEGIN_SRC
 python hw_train_and_test.py --dataset lipitk --num_train <number of train domains>
 #+END_SRC
+** NHCD Task
 #+BEGIN_SRC
 python hw_train_and_test.py --dataset nhcd --lr 1e-4
 #+END_SRC
 
-Use flags: `--simple` or `--cg` for ERM or CG baselines.
+Use flags: /--simple/ or /--cg/ for ERM or CG baselines.
 
 * PACS
 Download and configure the dataset https://domaingeneralization.github.io/
 Define target and source domains appropriately.
 
-`python train_csd.py --train_all --min_scale 0.8 --max_scale 1.0 --random_horiz_flip 0.5 --jitter 0.4 --tile_random_grayscale 0.1 --source photo cartoon sketch --target art_painting --bias_whole_image 0.9 --image_size 222`
+#+BEGIN_SRC
+python train_csd.py --train_all --min_scale 0.8 --max_scale 1.0 --random_horiz_flip 0.5 --jitter 0.4 --tile_random_grayscale 0.1 --source photo cartoon sketch --target art_painting --bias_whole_image 0.9 --image_size 222
+#+END_SRC
 
 * Speech task
-You need to download Speech dataset and extract it in to `speech_dataset` folder.
+You need to download Speech dataset and extract it in to /speech_dataset/ folder.
 It can be downloaded from: http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz
 
-`python train.py --training_percentage <num train domains> --train_dir=<checkpoints folder> --model mos2 --seed 0 --learning_rate 2e-3 --how_many_epochs 500 --lmbda 0.5 --num_uids=<2(K)>`
+#+BEGIN_SRC
+python train.py --training_percentage <num train domains> --train_dir=<checkpoints folder> --model mos2 --seed 0 --learning_rate 2e-3 --how_many_epochs 500 --lmbda 0.5 --num_uids=<2(K)>
+#+END_SRC
