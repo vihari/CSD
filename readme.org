@@ -1,4 +1,4 @@
-This folder contains code accompanying the submission: "Efficient Domain Generalization via Common-Specific Low-Rank Decomposition".
+This folder contains code accompanying the submission: [[https://arxiv.org/abs/2003.12815][Efficient Domain Generalization via Common-Specific Low-Rank Decomposition]].
 The folders are organized into 
 1. rotation: Rotation tasks on MNIST and Fashion-MNIST
 2. hw: Hand-written tasks on LipitK and Nepali Character recognition datasets
@@ -15,13 +15,23 @@ The data for hand-written and rotation tasks are either provided or scripted to 
 The following sections give more specific instructions on how to run the code.
 
 * Rotation tasks
-CSD: `python main.py --dataset mnist --classifier mos`
-ERM: `python main.py --dataset mnist --classifier simple`
+CSD: 
+#+BEGIN_SRC
+python main.py --dataset mnist --classifier mos
+#+END_SRC
+ERM: 
+#+BEGIN_SRC
+python main.py --dataset mnist --classifier simple
+#+END_SRC
 
 * Hand-written tasks
 
-`python hw_train_and_test.py --dataset lipitk --num_train <number of train domains>` 
-`python hw_train_and_test.py --dataset nhcd --lr 1e-4`
+#+BEGIN_SRC
+python hw_train_and_test.py --dataset lipitk --num_train <number of train domains>
+#+END_SRC
+#+BEGIN_SRC
+python hw_train_and_test.py --dataset nhcd --lr 1e-4
+#+END_SRC
 
 Use flags: `--simple` or `--cg` for ERM or CG baselines.
 
