@@ -1,13 +1,19 @@
 This folder contains code accompanying the submission: [[https://arxiv.org/abs/2003.12815][Efficient Domain Generalization via Common-Specific Low-Rank Decomposition]].
+
+Our proposed technique: Common Specific Decomposition (CSD) is extremely simple and can be easily incorporated in to your codestack by replacing the final layer with CSD.
+You may find the this isolated code nuggets of CSD for [[https://gist.github.com/vihari/bad9868049ef62db783e0fc11b22bb5c][TensorFlow]] and [[https://gist.github.com/vihari/0dc2c296e74636725cfee364637fb4f7][PyTorch]] handy. 
+
+However, if you wish to reproduce numbers from our paper, we highly encourage that you use our codestack. 
+
 The folders are organized into 
 1. rotation: Rotation tasks on MNIST and Fashion-MNIST
 2. hw: Hand-written tasks on LipitK and Nepali Character recognition datasets
 3. pacs: PACS evaluation with ResNet18
 4. speech: Speech utterance classification evaluation
 
-To be able to run the experiments, you need the following packages for Python3.6
-1. Tensorflow <= 1.16
-2. PyTorch
+To be able to run all the experiments, you need the following packages for Python3.6
+1. Tensorflow <= 1.16 >1.13 
+2. PyTorch >1.0 for PACS
 3. Keras
 
 The data for hand-written and rotation tasks are either provided or scripted to automatically download, however the PACS and speech dataset are to be downloaded and configured in order to run the provided code. 
