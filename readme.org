@@ -60,3 +60,5 @@ You can then CSD using the follwing command.
 $ cd speech;
 $ python train.py --training_percentage <num train domains> --train_dir=<checkpoints folder> --model mos2 --seed 0 --learning_rate 2e-3 --how_many_epochs 500 --lmbda 0.5 --num_uids=<2(K)>
 #+END_SRC
+
+Feel free to open an issue or write to me if you find something missing or confusing. 
