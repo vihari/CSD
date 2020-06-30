@@ -1,13 +1,19 @@
-This folder contains code accompanying the submission: "Efficient Domain Generalization via Common-Specific Low-Rank Decomposition".
+This folder contains code accompanying the submission: [[https://arxiv.org/abs/2003.12815][Efficient Domain Generalization via Common-Specific Low-Rank Decomposition]].
+
+Our proposed technique: Common Specific Decomposition (CSD) is extremely simple and can be easily incorporated in to your codestack by replacing the final layer with CSD.
+You may find the this isolated code nuggets of CSD for [[https://gist.github.com/vihari/bad9868049ef62db783e0fc11b22bb5c][TensorFlow]] and [[https://gist.github.com/vihari/0dc2c296e74636725cfee364637fb4f7][PyTorch]] handy. 
+
+However, if you wish to reproduce numbers from our paper, we highly encourage that you use our codestack. 
+
 The folders are organized into 
 1. rotation: Rotation tasks on MNIST and Fashion-MNIST
 2. hw: Hand-written tasks on LipitK and Nepali Character recognition datasets
 3. pacs: PACS evaluation with ResNet18
 4. speech: Speech utterance classification evaluation
 
-To be able to run the experiments, you need the following packages for Python3.6
-1. Tensorflow <= 1.16
-2. PyTorch
+To be able to run all the experiments, you need the following packages for Python3.6
+1. Tensorflow <= 1.16 >1.13 
+2. PyTorch >1.0 for PACS
 3. Keras
 
 The data for hand-written and rotation tasks are either provided or scripted to automatically download, however the PACS and speech dataset are to be downloaded and configured in order to run the provided code. 
@@ -15,24 +21,40 @@ The data for hand-written and rotation tasks are either provided or scripted to 
 The following sections give more specific instructions on how to run the code.
 
 * Rotation tasks
-CSD: `python main.py --dataset mnist --classifier mos`
-ERM: `python main.py --dataset mnist --classifier simple`
+CSD: 
+#+BEGIN_SRC
+python main.py --dataset mnist --classifier mos
+#+END_SRC
+ERM: 
+#+BEGIN_SRC
+python main.py --dataset mnist --classifier simple
+#+END_SRC
 
 * Hand-written tasks
 
-`python hw_train_and_test.py --dataset lipitk --num_train <number of train domains>` 
-`python hw_train_and_test.py --dataset nhcd --lr 1e-4`
+** LipitK Task
+#+BEGIN_SRC
+python hw_train_and_test.py --dataset lipitk --num_train <number of train domains>
+#+END_SRC
+** NHCD Task
+#+BEGIN_SRC
+python hw_train_and_test.py --dataset nhcd --lr 1e-4
+#+END_SRC
 
-Use flags: `--simple` or `--cg` for ERM or CG baselines.
+Use flags: /--simple/ or /--cg/ for ERM or CG baselines.
 
 * PACS
 Download and configure the dataset https://domaingeneralization.github.io/
 Define target and source domains appropriately.
 
-`python train_csd.py --train_all --min_scale 0.8 --max_scale 1.0 --random_horiz_flip 0.5 --jitter 0.4 --tile_random_grayscale 0.1 --source photo cartoon sketch --target art_painting --bias_whole_image 0.9 --image_size 222`
+#+BEGIN_SRC
+python train_csd.py --train_all --min_scale 0.8 --max_scale 1.0 --random_horiz_flip 0.5 --jitter 0.4 --tile_random_grayscale 0.1 --source photo cartoon sketch --target art_painting --bias_whole_image 0.9 --image_size 222
+#+END_SRC
 
 * Speech task
-You need to download Speech dataset and extract it in to `speech_dataset` folder.
+You need to download Speech dataset and extract it in to /speech_dataset/ folder.
 It can be downloaded from: http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz
 
-`python train.py --training_percentage <num train domains> --train_dir=<checkpoints folder> --model mos2 --seed 0 --learning_rate 2e-3 --how_many_epochs 500 --lmbda 0.5 --num_uids=<2(K)>`
+#+BEGIN_SRC
+python train.py --training_percentage <num train domains> --train_dir=<checkpoints folder> --model mos2 --seed 0 --learning_rate 2e-3 --how_many_epochs 500 --lmbda 0.5 --num_uids=<2(K)>
+#+END_SRC
