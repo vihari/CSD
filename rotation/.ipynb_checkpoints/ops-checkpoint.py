@@ -190,7 +190,7 @@ def mos_regression_loss(reprs, label, domain, num_domains):
 
   return loss, accuracy
 
-def mos_regression_lossv2(reprs, label, domain, num_domains, L=2, debug=False):
+def mos_regression_lossv2(reprs, label, domain, num_domains, L=2, cs_wt=0, debug=False):
   DIM = L
   batch_size = tf.shape(reprs)[0]
   EMB_SIZE = 128
@@ -198,7 +198,7 @@ def mos_regression_lossv2(reprs, label, domain, num_domains, L=2, debug=False):
 
   emb_matrix = tf.get_variable("emb_mat", shape=[num_domains, DIM-1], initializer=tf.random_normal_initializer(0, 1e-4))
   common_wt = tf.get_variable("common_wt", shape=[1], initializer=tf.ones_initializer)
-  common_specialized_wt = tf.get_variable("common_specialized_wt", shape=[], initializer=tf.random_normal_initializer(.5, 1e-2))
+  common_specialized_wt = tf.get_variable("common_specialized_wt", shape=[], initializer=tf.random_normal_initializer(cs_wt, 1e-2))
   common_cwt = tf.concat([common_wt, tf.zeros([DIM-1])], axis=0)
 
   # Batch size x DIM
@@ -206,7 +206,7 @@ def mos_regression_lossv2(reprs, label, domain, num_domains, L=2, debug=False):
   c_wts = tf.concat([tf.ones([batch_size, 1])*common_specialized_wt, c_wts], axis=1)
   c_wts = tf.reshape(c_wts, [batch_size, DIM])
 
-#   c_wts = tf.nn.sigmoid(c_wts)
+  c_wts = tf.nn.sigmoid(c_wts)
   
   sms = tf.get_variable("sm_matrices", shape=[DIM, EMB_SIZE, num_classes], trainable=True, initializer=tf.random_normal_initializer(0, 0.05))
   biases = tf.get_variable("sm_bias", shape=[DIM, num_classes], trainable=True, initializer=tf.random_normal_initializer(0, 0.05))
@@ -225,6 +225,7 @@ def mos_regression_lossv2(reprs, label, domain, num_domains, L=2, debug=False):
   # C x L x L
   diag_tensor = tf.eye(DIM, batch_shape=[num_classes])
   cps = tf.stack([tf.matmul(sms[:, :, _], sms[:, :, _], transpose_b=True) for _ in range(num_classes)])
+  # (1 - diag_tensor) *
   orthn_loss = tf.reduce_mean((cps - diag_tensor)**2)
   
   loss = 0.5*(loss1 + loss2) + orthn_loss

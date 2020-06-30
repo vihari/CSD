@@ -2,3 +2,6 @@ hw/data
 *~
 */__pycache__
 */.ipynb_checkpoints
+pacs/logs_alexnet
+pacs/models/pretrained/alexnet_caffe.pth.tar
+*.pyc

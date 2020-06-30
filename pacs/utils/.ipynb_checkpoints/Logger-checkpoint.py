@@ -2,8 +2,6 @@ from time import time
 
 from os.path import join, dirname
 
-from .tf_logger import TFLogger
-
 _log_path = join(dirname(__file__), '../logs')
 
 
@@ -18,7 +16,7 @@ class Logger():
         self.update_f = update_frequency
         folder, logname = self.get_name_from_args(args)
         log_path = join(_log_path, folder, logname)
-        if args.tf_logger:
+        if False:
             self.tf_logger = TFLogger(log_path)
             print("Saving to %s" % log_path)
         else:

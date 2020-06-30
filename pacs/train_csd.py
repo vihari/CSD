@@ -12,7 +12,6 @@ from optimizer.optimizer_helper import get_optim_and_scheduler
 from utils.Logger import Logger
 import numpy as np
 
-
 def get_args():
     parser = argparse.ArgumentParser(description="Script to launch jigsaw training", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--source", choices=available_datasets, help="Source", nargs='+')
@@ -24,7 +23,7 @@ def get_args():
     parser.add_argument("--max_scale", default=1.0, type=float, help="Maximum scale percent")
     parser.add_argument("--random_horiz_flip", default=0.0, type=float, help="Chance of random horizontal flip")
     parser.add_argument("--jitter", default=0.0, type=float, help="Color jitter amount")
-    parser.add_argument("--tile_random_grayscale", default=0.1, type=float, help="Chance of randomly greyscaling a tile")
+    parser.add_argument("--tile_random_grayscale", default=0., type=float, help="Chance of randomly greyscaling a tile")
     #
     parser.add_argument("--limit_source", default=None, type=int, help="If set, it will limit the number of training samples")
     parser.add_argument("--limit_target", default=None, type=int, help="If set, it will limit the number of testing samples")
@@ -43,6 +42,8 @@ def get_args():
     parser.add_argument("--train_all", action='store_true', help="If true, all network weights will be trained")
     parser.add_argument("--suffix", default="", help="Suffix for the logger")
     parser.add_argument("--nesterov", action='store_true', help="Use nesterov")
+    
+    parser.add_argument("--seed", "-s", type=int, default=0, help="Random seed")
     
     return parser.parse_args()
 
@@ -93,7 +94,10 @@ class Trainer:
             K = 2
             diag_tensor = torch.stack([torch.eye(K) for _ in range(self.n_classes)], dim=0).cuda()
             cps = torch.stack([torch.matmul(sms[:, :, _], torch.transpose(sms[:, :, _], 0, 1)) for _ in range(self.n_classes)], dim=0)
-            orth_loss = torch.mean((cps - diag_tensor)**2)
+            if self.args.network.startswith('caffenet'):
+              orth_loss = torch.mean((1 - diag_tensor)*(cps - diag_tensor)**2)
+            else:
+              orth_loss = torch.mean((cps - diag_tensor)**2)
             
             loss = class_loss + specific_loss + orth_loss 
             
@@ -148,6 +152,8 @@ class Trainer:
 
 def main():
     args = get_args()
+    torch.manual_seed(args.seed)
+    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     trainer = Trainer(args, device)
     trainer.do_training()

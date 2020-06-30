@@ -101,12 +101,14 @@ class JigsawDataset(data.Dataset):
         return len(self.names)
 
     def __retrieve_permutations(self, classes):
-        all_perm = np.load('permutations_%d.npy' % (classes))
-        # from range [1,9] to [0,8]
-        if all_perm.min() == 1:
-            all_perm = all_perm - 1
+        nc = len(self.labels)
+        return np.array([np.random.choice(np.arange(nc), nc, replace=False) for _ in range(classes)])
+#         all_perm = np.load('permutations_%d.npy' % (classes))
+#         # from range [1,9] to [0,8]
+#         if all_perm.min() == 1:
+#             all_perm = all_perm - 1
 
-        return all_perm
+#         return all_perm
 
 
 class JigsawTestDataset(JigsawDataset):

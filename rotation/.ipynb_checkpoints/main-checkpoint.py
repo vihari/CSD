@@ -26,13 +26,18 @@ def parse_args():
                         help='Classifier type: simple/mos')
     parser.add_argument('--L', type=int, default=2,
                         help='L for mos')
+    parser.add_argument('--cs_wt', type=float, default=0,
+                        help='Initialization param for CSD')
     parser.add_argument('--normalize', action='store_true')
     parser.add_argument('--dset_size', type=int, default=1000,
                         help='Dataset size')
-    parser.add_argument('--num_domains', type=int, default=20,
-                        help='Number of train domains')
+    parser.add_argument('--rot', type=str, default="15,75",
+                        help='Comma separated left and right extreme values (both included) for rotation. If it is "15,75", then we include in the train data all the angles: [15, 30, 45, 60, 75].')
 
-    return check_args(parser.parse_args())
+    
+    args = parser.parse_args()
+    args.checkpoint_dir += "_cswt=%f_classifier=%s_rot=%s" % (args.cs_wt, args.classifier, args.rot)
+    return check_args(args)
 
 """checking arguments"""
 def check_args(args):

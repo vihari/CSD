@@ -46,13 +46,7 @@ class ResNet(object):
             self.img_size = 64
             self.c_dim = 3
             self.label_dim = 200
-            
-        if self.dataset_name == 'lipitk' :
-            self.train_x, self.train_y, self.train_u, self.test_x, self.test_y, self.test_u = load_lipitk(args.num_domains)
-            self.img_size = 32
-            self.c_dim = 1
-            self.label_dim = 111
-
+        
         fname = "cache2000/%s.pkl" % self.dataset_name
         self.num_domains = 10
         ROTATE = True
@@ -76,7 +70,8 @@ class ResNet(object):
 
             all_train_x, all_train_y, all_train_u = [], [], []
             all_test_x, all_test_y, all_test_u = [], [], []
-            for idx, angle in tqdm.tqdm(enumerate(range(15, 90, 15)), desc='Rotating train images'):
+            low_rot, high_rot = list(map(int, args.rot.split(",")))
+            for idx, angle in tqdm.tqdm(enumerate(range(low_rot, high_rot+15, 15)), desc='Rotating train images'):
               for train_image in self.train_x:
                 _rot = custom_rot(train_image, angle, reshape=False)
                 all_train_x.append(_rot)
@@ -204,9 +199,9 @@ class ResNet(object):
 
         if self.args.classifier == 'mos':
           with tf.variable_scope(''):
-            self.train_loss, self.train_accuracy = mos_regression_lossv2(reprs=self.train_reprs, label=self.train_labels, domain=self.train_domains, num_domains=self.num_domains, L=self.args.L)
+            self.train_loss, self.train_accuracy = mos_regression_lossv2(reprs=self.train_reprs, label=self.train_labels, domain=self.train_domains, num_domains=self.num_domains, L=self.args.L, cs_wt=self.args.cs_wt)
           with tf.variable_scope('', reuse=True):
-            self.test_loss, self.test_accuracy = mos_regression_lossv2(reprs=self.test_reprs, label=self.test_labels, domain=self.test_domains, num_domains=self.num_domains, L=self.args.L)
+            self.test_loss, self.test_accuracy = mos_regression_lossv2(reprs=self.test_reprs, label=self.test_labels, domain=self.test_domains, num_domains=self.num_domains, L=self.args.L, cs_wt=self.args.cs_wt)
         else: 
           with tf.variable_scope(''):
             self.train_loss, self.train_accuracy = regression_loss(reprs=self.train_reprs, label=self.train_labels, domain=self.train_domains, num_domains=self.num_domains)

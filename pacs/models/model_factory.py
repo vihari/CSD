@@ -1,4 +1,5 @@
 from models import caffenet
+from models import caffenet_csd
 from models import mnist
 from models import patch_based
 from models import alexnet
@@ -7,6 +8,7 @@ from models import resnet_csd
 
 nets_map = {
     'caffenet': caffenet.caffenet,
+    'caffenet_csd': caffenet_csd.caffenet,
     'alexnet': alexnet.alexnet,
     'resnet18': resnet.resnet18,
     'resnet18_csd': resnet_csd.resnet18,
