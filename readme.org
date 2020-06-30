@@ -44,10 +44,10 @@ python hw_train_and_test.py --dataset nhcd --lr 1e-4
 Use flags: /--simple/ or /--cg/ for ERM or CG baselines.
 
 * PACS
-CSD is coded in to the implementation of [[JigenDG][https://github.com/fmcarlucci/JigenDG]] for a fair comparison. 
+CSD is coded in to the implementation of [[https://github.com/fmcarlucci/JigenDG][JigenDG]], a previous domain generalizing approach. 
 
 Use the following steps in order to run experiments.
-1. Download and configure the PACS dataset [[https://domaingeneralization.github.io/][https://domaingeneralization.github.io/]] such that all the paths in /pacs/data/txt_lists/ are appropriate.
+1. Download and configure the [[https://domaingeneralization.github.io/][PACS dataset]] such that all the paths in /pacs/data/txt_lists/ are appropriate.
 2. Use /pacs/run.sh/ either to run PACS evaluation using AlexNet or ResNet-18. 
 
 * Speech task
