@@ -1,4 +1,4 @@
-This folder contains code accompanying the submission: [[https://arxiv.org/abs/2003.12815][Efficient Domain Generalization via Common-Specific Low-Rank Decomposition]].
+This folder contains code accompanying the submission: [[https://arxiv.org/abs/2003.12815][Efficient Domain Generalization via Common-Specific Low-Rank Decomposition]] (ICML 2020).
 
 Our proposed technique: Common Specific Decomposition (CSD) is extremely simple and can be easily incorporated in to your codestack by replacing the final layer with CSD.
 You may find the this isolated code nuggets of CSD for [[https://gist.github.com/vihari/bad9868049ef62db783e0fc11b22bb5c][TensorFlow]] and [[https://gist.github.com/vihari/0dc2c296e74636725cfee364637fb4f7][PyTorch]] handy. 
